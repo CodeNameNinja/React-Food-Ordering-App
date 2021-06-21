@@ -1,0 +1,2 @@
+(this["webpackJsonpfood-ordering-app"]=this["webpackJsonpfood-ordering-app"]||[]).push([[0],{11:function(e,t,n){"use strict";n.r(t);var r=n(1),c=n.n(r),o=n(3),i=n.n(o),d=(n(8),n(9),n(0));var s=function(){return Object(d.jsx)("div",{children:Object(d.jsx)("h2",{children:"Let's get started!"})})};i.a.render(Object(d.jsx)(c.a.StrictMode,{children:Object(d.jsx)(s,{})}),document.getElementById("root"))},8:function(e,t,n){},9:function(e,t,n){}},[[11,1,2]]]);
+//# sourceMappingURL=main.d66b043a.chunk.js.map
