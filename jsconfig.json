@@ -4,7 +4,8 @@
       "baseUrl": "src",
       "checkJs": true,
       "paths": {
-        "store/*": ["./store/*"]
+        "store/*": ["./store/*"],
+        "assets/*": ["./assets/*"],
       }
     },
     "include": ["src"],
