@@ -6,6 +6,7 @@
       "paths": {
         "store/*": ["./store/*"],
         "assets/*": ["./assets/*"],
+        "components/*": ["./components/*"],
       }
     },
     "include": ["src"],
