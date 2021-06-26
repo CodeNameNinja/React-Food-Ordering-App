@@ -1,6 +1,16 @@
 import React from "react";
 import classes from "./Cart.module.css";
 import Modal from  "components/UI/Modal/Modal";
+
+/**
+ * @typedef {Object} PropType 
+ * @property {import("react").MouseEventHandler} onHideCart a Function that closes the Cart Modal
+ */
+
+/**
+ * @param {PropType} props 
+ */
+
 const Cart = (props) => {
   const cartItems = (
     <ul className={classes['cart-items']}>
