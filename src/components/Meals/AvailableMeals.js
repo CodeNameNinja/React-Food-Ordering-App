@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./AvailableMeals.module.css";
 
 import Card from "../UI/Card/Card";
@@ -30,8 +30,42 @@ const DUMMY_MEALS = [
   },
 ];
 const AvailableMeals = (props) => {
-  const mealsList = DUMMY_MEALS.map((meal) => {
-    return <MealItem id={meal.id} key={meal.id} meal={meal}>{meal.name}</MealItem>;
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    const fetchMeals = async () => {
+      setIsLoading(true);
+      let response = await fetch(
+        "https://dummymovie-96eb2-default-rtdb.firebaseio.com/meals.json"
+      );
+      let responseData = await response.json();
+      let meals = [];
+      for (let key in responseData) {
+        meals.push({
+          ...responseData[key],
+          id: key,
+        });
+      }
+      setMeals(meals);
+      setIsLoading(false);
+    };
+
+    fetchMeals();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className={classes.Loading}>
+        <h1>Loading...</h1>
+      </section>
+    );
+  }
+  const mealsList = meals.map((meal) => {
+    return (
+      <MealItem id={meal.id} key={meal.id} meal={meal}>
+        {meal.name}
+      </MealItem>
+    );
   });
   return (
     <section className={classes.meals}>
