@@ -32,12 +32,17 @@ const DUMMY_MEALS = [
 const AvailableMeals = (props) => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchMeals = async () => {
       setIsLoading(true);
       let response = await fetch(
         "https://dummymovie-96eb2-default-rtdb.firebaseio.com/meals.json"
       );
+      if (!response.ok) {
+        throw new Error("Failed to fetch meals");
+      }
       let responseData = await response.json();
       let meals = [];
       for (let key in responseData) {
@@ -50,13 +55,23 @@ const AvailableMeals = (props) => {
       setIsLoading(false);
     };
 
-    fetchMeals();
+    fetchMeals().catch((error) => {
+      setIsLoading(false);
+      setError(error.message);
+    });
   }, []);
 
   if (isLoading) {
     return (
       <section className={classes.Loading}>
         <h1>Loading...</h1>
+      </section>
+    );
+  }
+  if (error) {
+    return (
+      <section className={classes.Error}>
+        <h1>{error}</h1>
       </section>
     );
   }
