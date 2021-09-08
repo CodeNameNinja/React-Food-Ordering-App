@@ -18,7 +18,8 @@ const Cart = (props) => {
   const cartCtx = useContext(CartContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartItemRemoveHandler = (id) => {
     cartCtx.removeItem(id);
   };
@@ -28,6 +29,19 @@ const Cart = (props) => {
 
   const orderHandler = () => {
     setIsCheckout(true);
+  };
+
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    await fetch(
+      "https://dummymovie-96eb2-default-rtdb.firebaseio.com/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
+      }
+    );
+    setIsSubmitting(false);
+    setDidSubmit(true);
   };
   const cartItems = (
     <ul className={classes["cart-items"]}>
@@ -60,15 +74,28 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={props.onHideCart}>
+  const cartModalContent = (
+    <React.Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onHideCart}/>}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={props.onHideCart} />
+      )}
       {!isCheckout && modalActions}
+    </React.Fragment>
+  );
+
+  const isSubmittingModalContent = <p>Sending Order Data...</p>;
+  const didSubmitModalContent = <p>Succesfully sent the order</p>
+
+  return (
+    <Modal onClose={props.onHideCart}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {didSubmit && didSubmitModalContent}
     </Modal>
   );
 };

@@ -31,11 +31,11 @@ const Checkout = (props) => {
     const enteredCityIsValid = !isEmpty(enteredCity);
 
     setFormInputValidity({
-        name: enteredNameIsValid,
-        street: enteredStreetIsValid,
-        city: enteredCityIsValid,
-        postalCode: enteredPostalIsValid
-    })
+      name: enteredNameIsValid,
+      street: enteredStreetIsValid,
+      city: enteredCityIsValid,
+      postalCode: enteredPostalIsValid,
+    });
     const formIsValid =
       enteredNameIsValid &&
       enteredStreetIsValid &&
@@ -44,12 +44,27 @@ const Checkout = (props) => {
     if (!formIsValid) {
       return;
     }
+
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      postal: enteredPostal,
+      city: enteredCity,
+    });
   };
 
-  const nameControlClasses = `${classes.control} ${formInputValidity.name ? '' : classes.invalid}`
-  const streetControlClasses = `${classes.control} ${formInputValidity.street ? '' : classes.invalid}`
-  const postalControlClasses = `${classes.control} ${formInputValidity.postalCode ? '' : classes.invalid}`
-  const cityControlClasses = `${classes.control} ${formInputValidity.city ? '' : classes.invalid}`
+  const nameControlClasses = `${classes.control} ${
+    formInputValidity.name ? "" : classes.invalid
+  }`;
+  const streetControlClasses = `${classes.control} ${
+    formInputValidity.street ? "" : classes.invalid
+  }`;
+  const postalControlClasses = `${classes.control} ${
+    formInputValidity.postalCode ? "" : classes.invalid
+  }`;
+  const cityControlClasses = `${classes.control} ${
+    formInputValidity.city ? "" : classes.invalid
+  }`;
 
   return (
     <form className={classes.form} onSubmit={confirmHandler}>
@@ -66,7 +81,9 @@ const Checkout = (props) => {
       <div className={postalControlClasses}>
         <label htmlFor="postal">Postal Code</label>
         <input type="text" id="postal" ref={postalInputRef} />
-        {!formInputValidity.postalCode && <p>Please enter a valid postal code</p>}
+        {!formInputValidity.postalCode && (
+          <p>Please enter a valid postal code</p>
+        )}
       </div>
       <div className={cityControlClasses}>
         <label htmlFor="city">City</label>
