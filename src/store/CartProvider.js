@@ -27,7 +27,7 @@ const defaultCartState = {
  */
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    let updatedTotalAmount
+    let updatedTotalAmount;
 
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.item.id
@@ -37,7 +37,7 @@ const cartReducer = (state, action) => {
     let updatedItems;
 
     if (existingCartItem) {
-      updatedTotalAmount  = state.totalAmount + action.item.price;
+      updatedTotalAmount = state.totalAmount + action.item.price;
       const updatedItem = {
         ...existingCartItem,
         amount: existingCartItem.amount + 1,
@@ -46,7 +46,8 @@ const cartReducer = (state, action) => {
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
     } else {
-      updatedTotalAmount  = state.totalAmount + action.item.price * action.item.amount;
+      updatedTotalAmount =
+        state.totalAmount + action.item.price * action.item.amount;
       updatedItems = state.items.concat(action.item);
     }
 
@@ -64,17 +65,24 @@ const cartReducer = (state, action) => {
 
     let updatedItems;
     if (existingCartItem.amount === 1) {
-      updatedItems = state.items.filter(item => item.id !== action.id)
+      updatedItems = state.items.filter((item) => item.id !== action.id);
     } else {
-      const updatedItem = {...existingCartItem, amount: existingCartItem.amount - 1}
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount - 1,
+      };
       updatedItems = [...state.items];
-      updatedItems[existingCartItemIndex] = updatedItem
+      updatedItems[existingCartItemIndex] = updatedItem;
     }
 
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     };
+  }
+
+  if (action.type === "CLEAR") {
+    return defaultCartState;
   }
   return defaultCartState;
 };
@@ -104,6 +112,10 @@ const CartProvider = (props) => {
       id,
     });
   };
+
+  const clearCartHandler = () => {
+    dispatchCartAction({type: "CLEAR"});
+  }
   /**
    * @type {Object}
    * @property {Array} items
@@ -116,6 +128,8 @@ const CartProvider = (props) => {
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler,
+    
   };
   return (
     <CartContext.Provider value={cartContext}>
